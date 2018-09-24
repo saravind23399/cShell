@@ -30,15 +30,22 @@ void shell(char* username)
             }
         }
         splitStrings[cnt]=NULL;
-        int status = 0;
-        pid_t wpid;
-        pid_t child = fork();
-        if(child==0)
+        if(strcmp("exit",splitStrings[0])!=0)
         {
-            execv(splitStrings[0],splitStrings);
-            return;
+            int status = 0;
+            pid_t wpid;
+            pid_t child = fork();
+            if(child==0)
+            {
+                execv(splitStrings[0],splitStrings);
+                return;
+            }
+            while ((wpid = wait(&status)) > 0);
         }
-        while ((wpid = wait(&status)) > 0);
+        else
+        {
+            exit(EXIT_SUCCESS);
+        }
     }
 }
 
