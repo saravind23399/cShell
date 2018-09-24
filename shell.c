@@ -1,7 +1,5 @@
 #include "shell.h"
 
-
-
 void shell(char* username)
 {
     printf("The UNIX Shell\n**************\n\n");
@@ -10,9 +8,7 @@ void shell(char* username)
         printf("theUnixShell@%s $ ",username);
         char line[100];
         gets(line);
-        //printf("%s\n",line);
-        //printf("%d\n",strlen(line));
-        char* splitStrings[10]; //can store 10 words of 10 characters
+        char* splitStrings[10]; 
         for(int i = 0 ; i <10 ; i++)
         {
             splitStrings[i]=malloc(10*sizeof(char));
@@ -21,12 +17,11 @@ void shell(char* username)
         j=0; cnt=0;
         for(i=0;i<=(strlen(line));i++)
         {
-            // if space or NULL found, assign NULL into splitStrings[cnt]
             if(line[i]==' '||line[i]=='\0')
             {
                 splitStrings[cnt][j]='\0';
-                cnt++;  //for next word
-                j=0;    //for next word, init index to 0
+                cnt++;  
+                j=0;    
             }
             else
             {
@@ -35,14 +30,15 @@ void shell(char* username)
             }
         }
         splitStrings[cnt]=NULL;
-        if(fork())
+        int status = 0;
+        pid_t wpid;
+        pid_t child = fork();
+        if(child==0)
         {
             execv(splitStrings[0],splitStrings);
+            return;
         }
-        else
-        {
-            wait();
-        }
+        while ((wpid = wait(&status)) > 0);
     }
 }
 
