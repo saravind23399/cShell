@@ -9,3 +9,9 @@
 #include <pwd.h>
 #include <grp.h>
 #include <string.h>
+
+struct user
+{
+  char password[30];
+  char name[30];
+};

@@ -2,7 +2,6 @@
 
 void shell(char* username)
 {
-    printf("The UNIX Shell\n**************\n\n");
     while(1)
     {
         printf("theUnixShell@%s $ ",username);
@@ -44,12 +43,53 @@ void shell(char* username)
         }
         else
         {
+            printf("Logout\n");
             exit(EXIT_SUCCESS);
         }
     }
 }
 
+int search(char* username, char* password)
+{
+  FILE *fp;
+  struct user it;
+  int found=0;
+  fp=fopen("users.bin","rb");
+  while (1)
+  {
+    fread(&it,sizeof(it),1,fp);
+    if (feof(fp))
+      break;
+    if (strcmp(it.name,username)==0 && strcmp(it.password,password)==0)
+    {
+      return 1;
+    }
+  }
+    return 0;
+}
+
 int main()
 {
-    shell("aravind");
+    printf("The UNIX Shell\n**************\n\n");
+    char uname[30];
+    char password[30];
+    int found = 0;
+    for(int i = 0;i<3;i++)
+    {
+        printf("Username : ");
+        scanf("%s",uname);
+        printf("Password : ");
+        scanf("%s",password);
+        if(search(uname,password)==1)
+        {
+            fflush(stdin);
+            found=1;
+            break;
+        }
+    }
+    if(found)
+    {
+        shell(uname);
+    }
+    return 0;
 }
